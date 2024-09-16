@@ -8,6 +8,6 @@ scribble_font_set_default("spr_carton");
 Catspeak.interface.exposeFunctionByName("show_message");
 Catspeak.interface.exposeFunctionByName("game_end");
 
-dialogue_system	= new SimpleDialogueSystem();
+dialogue_system	= new SimpleDialogueSystem(, 6, 10,,spr_test_avatar);
 dialogue_system.load_from_file("dialogue/testing/test_script.json");
 dialogue_system.load_dialogue("introduction");

@@ -1,4 +1,4 @@
-function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 2, _dialogue_complete = undefined, _character_sprite = undefined) constructor {
+function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 2, _dialogue_complete = undefined, _character_sprite = undefined, _dialogue_background = spr_dialogue_background) constructor {
 	current_dialogue		= -1;
 	current_dialogue_index	= -1;
 	available_dialogues		= [];
@@ -20,7 +20,8 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 	});
 	typist.sound_per_char(voice, voice_min, voice_max);
 	
-	character_sprite		= undefined;
+	character_sprite		= _character_sprite;
+	dialogue_background		= _dialogue_background;
 	
 	
 	static load_dialogue = function(_name) {
@@ -236,17 +237,45 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 	}
 	
 	static draw = function() {
-		var _root = current_dialogue.dialogue_messages[current_dialogue_index];
-		
 		if (current_dialogue != -1) {
-			scribble(_root.text).wrap(300).draw(10, 10, typist);
+			var _root = current_dialogue.dialogue_messages[current_dialogue_index];
+			
+			// Draw the background
+			var _start_x = display_get_gui_width() / 2 - 208;
+			var _max_width = 400;
+			
+			if (character_sprite != undefined) {
+				_start_x += 74;	
+				_max_width = 400 - 74;
+			}
+			
+			if (character_sprite != undefined) {
+				draw_sprite_stretched(dialogue_background, 0, _start_x - 74, display_get_gui_height() - 104, 72, 72);
+				draw_sprite_stretched(dialogue_background, 0, _start_x, display_get_gui_height() - 104, 416 - 74, 72);
+				draw_sprite(character_sprite, 0, _start_x - 74 + 37, display_get_gui_height() - 104 + 37);
+			} else {
+				draw_sprite_stretched(dialogue_background, 0, display_get_gui_width() / 2 - 208, display_get_gui_height() - 104, 416, 72);
+			}
+			
+			// Draw the text
+			scribble("[c_dark]" + _root.text).wrap(300).fit_to_box(_max_width, 68).draw(_start_x + 4, display_get_gui_height() - 100, typist);
+			
+			// Draw the speakers name
+			draw_sprite_stretched(spr_dialogue_background, 0, display_get_gui_width() / 2 - 208, display_get_gui_height() - 126, 100, 20);
+			scribble("[c_d_blue]" + _root.speaker).draw(display_get_gui_width() / 2 - 204, display_get_gui_height() - 120);
+			
+			__scribble_config_colours()
 			
 			if (waiting_on_typist) return;
 			if (_root.choices != undefined) {
 				for (var _i = 0; _i < array_length(_root.choices); _i++) {
-					var _colour = (_i == _root.selected_index) ? "[rainbow][jitter]" : "[c_white]";
-					scribble(_colour + _root.choices[_i].text).draw(10, 20 + (_i * 12));	
+					if (_i == _root.selected_index) {
+						draw_sprite_stretched(dialogue_background, 0, display_get_gui_width() / 2 + 208 - string_width(_root.choices[_i].text), display_get_gui_height() - 126, string_width(_root.choices[_i].text), 20);
+						scribble("[c_d_green]" + _root.choices[_i].text).draw(display_get_gui_width() / 2 + 212 - string_width(_root.choices[_i].text), display_get_gui_height() - 120);
+					}
 				}
+			} else {
+				draw_sprite(spr_dialogue_pointer, 0, display_get_gui_width() / 2 + 208 - 24, display_get_gui_height() - 52);
 			}
 		}
 	}
