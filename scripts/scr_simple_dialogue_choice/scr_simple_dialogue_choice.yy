@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scr_simple_dialogue_choice",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scr_simple_dialogue_choice",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/SDS/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

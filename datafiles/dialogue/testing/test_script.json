@@ -1,0 +1,82 @@
+[
+  {
+    "name": "introduction",
+    "entries": [
+      {
+        "name": "intro_1",
+        "speaker": "Ronald",
+        "text": "Hello,[delay] how are you doing today?",
+        "choices": [
+          {
+            "text": "I'm good.",
+            "jump": "intro_2",
+            "callback": "show_message(\"Glad you are well\")"
+          },
+          {
+            "text": "I'm not feeling well.",
+            "jump": "intro_1_5"
+          }
+        ]
+      },
+      {
+        "name": "intro_1_5",
+        "speaker": "Ronald",
+        "text": "I am sorry that you are not feeling well,[delay] I wish I could help you.",
+        "jump": "intro_3_5"
+      },
+      {
+        "name": "intro_2",
+        "speaker": "Ronald",
+        "text": "I am glad that you are doing well."
+      },
+      {
+        "name": "intro_3",
+        "speaker": "Ronald",
+        "text": "Okay, it was nice speaking to you, I'm going to end the game now.",
+        "callback": "game_end(0)"
+      },
+      {
+        "name": "intro_3_5",
+        "speaker": "Ronald",
+        "text": "What cat would cheer you up?",
+        "choices": [
+          {
+            "text": "Idgi",
+            "jump": "idgi_cat"
+          },
+          {
+            "text": "Sumo",
+            "jump": "sumo_cat"
+          }
+        ]
+      },
+      {
+        "name": "idgi_cat",
+        "speaker": "Ronald",
+        "text": "Yeah, Idgi is a cute little rat.",
+        "jump": "intro_3"
+      },
+      {
+        "name": "sumo_cat",
+        "speaker": "Ronald",
+        "text": "Sumo is such a fat little so & so.",
+        "jump": "intro_3"
+      }
+    ]
+  },
+  {
+    "name": "outro",
+    "entries": [
+      {
+        "name": "outro_1",
+        "speaker": "Ronald",
+        "text": "Goodbye, thank you for stopping in."
+      },
+      {
+        "name": "outro_2",
+        "speaker": "Ronald",
+        "text": "So long and farewell."
+      }
+    ]
+  }
+]
