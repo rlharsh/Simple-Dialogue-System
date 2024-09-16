@@ -24,7 +24,7 @@
   "name":"spr_dialogue_background",
   "nineSlice":{
     "$GMNineSliceData":"",
-    "bottom":3,
+    "bottom":5,
     "enabled":true,
     "guideColour":[4294902015,4294902015,4294902015,4294902015,],
     "highlightColour":1728023040,

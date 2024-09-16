@@ -23,6 +23,11 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 	character_sprite		= _character_sprite;
 	dialogue_background		= _dialogue_background;
 	
+	arrow_tween_data = {
+		xx: 0	
+	}
+	
+	arrow_tween = TweenFire(arrow_tween_data, EaseLinear, TWEEN_MODE_PATROL, true, 0, .25, "xx", 0, 2);
 	
 	static load_dialogue = function(_name) {
 			for (var _i = 0; _i < array_length(available_dialogues); _i++) {
@@ -256,13 +261,19 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 			} else {
 				draw_sprite_stretched(dialogue_background, 0, display_get_gui_width() / 2 - 208, display_get_gui_height() - 104, 416, 72);
 			}
-			
+			__scribble_config_colours()
 			// Draw the text
-			scribble("[c_dark]" + _root.text).wrap(300).fit_to_box(_max_width, 68).draw(_start_x + 4, display_get_gui_height() - 100, typist);
+			var _text = scribble("[c_dark]" + _root.text).wrap(300).fit_to_box(_max_width, 68);
+			_text.blend(c_black, 0.2).draw(_start_x + 5, display_get_gui_height() - 99, typist);
+			_text.blend(c_white, 1).draw(_start_x + 4, display_get_gui_height() - 100, typist);
 			
 			// Draw the speakers name
-			draw_sprite_stretched(spr_dialogue_background, 0, display_get_gui_width() / 2 - 208, display_get_gui_height() - 126, 100, 20);
-			scribble("[c_d_blue]" + _root.speaker).draw(display_get_gui_width() / 2 - 204, display_get_gui_height() - 120);
+			var _speaker_name	= scribble("[c_d_blue]" + _root.speaker);
+			var _speaker_width	= _speaker_name.get_width();
+			draw_sprite_stretched(spr_dialogue_background, 0, display_get_gui_width() / 2 - 208, display_get_gui_height() - 126, _speaker_width + 6, 20);
+			var _speaker_text = scribble("[c_d_blue]" + _root.speaker);
+			_speaker_text.blend(c_black, 0.2).draw(display_get_gui_width() / 2 - 204 + 1, display_get_gui_height() - 119);
+			_speaker_text.blend(c_white, 1).draw(display_get_gui_width() / 2 - 204, display_get_gui_height() - 120);
 			
 			__scribble_config_colours()
 			
@@ -270,12 +281,15 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 			if (_root.choices != undefined) {
 				for (var _i = 0; _i < array_length(_root.choices); _i++) {
 					if (_i == _root.selected_index) {
-						draw_sprite_stretched(dialogue_background, 0, display_get_gui_width() / 2 + 208 - string_width(_root.choices[_i].text), display_get_gui_height() - 126, string_width(_root.choices[_i].text), 20);
-						scribble("[c_d_green]" + _root.choices[_i].text).draw(display_get_gui_width() / 2 + 212 - string_width(_root.choices[_i].text), display_get_gui_height() - 120);
+						var _option_text		= scribble("[c_white]" + _root.choices[_i].text);
+						var _option_text_width	= _option_text.get_width();
+						draw_sprite_stretched(dialogue_background, 0, display_get_gui_width() / 2 + 208 - _option_text_width - 6, display_get_gui_height() - 126, _option_text_width + 6, 20);
+						_option_text.blend(c_black, 0.2).draw(display_get_gui_width() / 2 + 212 - _option_text_width - 6 + 1, display_get_gui_height() - 119);
+						_option_text.blend(c_white, 1).draw(display_get_gui_width() / 2 + 212 - _option_text_width - 6, display_get_gui_height() - 120);
 					}
 				}
 			} else {
-				draw_sprite(spr_dialogue_pointer, 0, display_get_gui_width() / 2 + 208 - 24, display_get_gui_height() - 52);
+				draw_sprite(spr_dialogue_pointer, 0, display_get_gui_width() / 2 + 208 - 24 + arrow_tween_data.xx, display_get_gui_height() - 52);
 			}
 		}
 	}
