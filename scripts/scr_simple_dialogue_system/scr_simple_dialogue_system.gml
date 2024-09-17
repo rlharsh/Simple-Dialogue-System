@@ -119,6 +119,7 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 		}
 		waiting_on_typist	= true;
 		skip_pressed		= false;
+		audio_play_sound(JDSherbert___Ultimate_UI_SFX_Pack___Popup_Open___1, 1, 0);
 	}
 	
 	static add_dialogue = function(_name, _dialogue_messages = []) {
@@ -144,6 +145,7 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 						waiting_on_input	= false;
 						skip_pressed		= false;
 					}
+					audio_play_sound(JDSherbert___Ultimate_UI_SFX_Pack___Popup_Open___1, 1, 0);
 					return;
 				}
 			}
@@ -162,6 +164,8 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 					skip_pressed = true;	
 					return;
 				}
+				
+				audio_play_sound(JDSherbert___Ultimate_UI_SFX_Pack___Select___2, 1, 0);
 				
 				if (variable_struct_exists(_root, "callback")) {
 				    var _callback_string = _root.callback;
@@ -189,12 +193,14 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 					} else {
 						_root.selected_index = array_length(_root.choices) - 1;	
 					}
+					audio_play_sound(JDSherbert___Ultimate_UI_SFX_Pack___Swipe___1, 1, 0); 
 				} else if (input_check_pressed("down")) {
 					if (_root.selected_index + 1 < array_length(_root.choices)) {
 						_root.selected_index++;	
 					} else {
 						_root.selected_index = 0;	
 					}
+					audio_play_sound(JDSherbert___Ultimate_UI_SFX_Pack___Swipe___2, 1, 0);
 				} else if (input_check_pressed("action")) {
 					if (skip_pressed) return;
 				
@@ -203,6 +209,8 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 						skip_pressed = true;
 						return;
 					}
+					
+					audio_play_sound(JDSherbert___Ultimate_UI_SFX_Pack___Select___1, 1, 0);
 					
 					if (variable_struct_exists(_root.choices[_root.selected_index], "callback")) {
 						var _callback_string = _root.choices[_root.selected_index].callback;
@@ -281,7 +289,7 @@ function SimpleDialogueSystem(_voice = snd_voice2, _voice_min = 1, _voice_max = 
 			if (_root.choices != undefined) {
 				for (var _i = 0; _i < array_length(_root.choices); _i++) {
 					if (_i == _root.selected_index) {
-						var _option_text		= scribble("[c_white]" + _root.choices[_i].text);
+						var _option_text		= scribble("[c_green]" + _root.choices[_i].text);
 						var _option_text_width	= _option_text.get_width();
 						draw_sprite_stretched(dialogue_background, 0, display_get_gui_width() / 2 + 208 - _option_text_width - 6, display_get_gui_height() - 126, _option_text_width + 6, 20);
 						_option_text.blend(c_black, 0.2).draw(display_get_gui_width() / 2 + 212 - _option_text_width - 6 + 1, display_get_gui_height() - 119);
